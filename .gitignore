@@ -2,3 +2,8 @@
 ._*
 __MACOSX/
 Thumbs.db
+
+# Node / pnpm
+node_modules/
+dist/
+.vite/
