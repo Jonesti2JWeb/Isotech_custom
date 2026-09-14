@@ -106,9 +106,22 @@ document.addEventListener('DOMContentLoaded', () => {
         indicator.style.opacity = '1';
     }
 
-    // Initialize indicator position on page load
+    // Place the active-link indicator instantly on load (no slide-in/fade flicker between pages).
     if (activeLink) {
-        setTimeout(() => moveIndicator(activeLink), 50);
+        const placeInstant = () => {
+            const prevTransition = indicator.style.transition;
+            indicator.style.transition = 'none';
+            moveIndicator(activeLink);
+            // Restore transitions after the position is committed (so hover still animates).
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                indicator.style.transition = prevTransition;
+            }));
+        };
+        placeInstant();
+        // Reposition once web fonts finish loading (link widths can change), still without animating.
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(placeInstant);
+        }
     }
 
     // Add debounced mouse event listeners to links

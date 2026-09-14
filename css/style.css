@@ -25,6 +25,11 @@
     box-sizing: border-box;
 }
 
+/* Sfondo scuro sull'<html> per evitare il lampo bianco durante il cambio pagina. */
+html {
+    background-color: var(--primary-dark);
+}
+
 /* Native smooth scroll only as fallback; Lenis (adds .lenis on <html>) handles smoothing when active. */
 html:not(.lenis) {
     scroll-behavior: smooth;
