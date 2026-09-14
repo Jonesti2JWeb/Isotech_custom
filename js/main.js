@@ -1,4 +1,71 @@
+// Always restore pages to the top on load/navigation (prevents opening mid-page or from the bottom).
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+if (!window.location.hash) window.scrollTo(0, 0);
+
+// Lenis smooth scroll instance (shared so scroll handlers / anchors can use it).
+let lenis = null;
+
+function initSmoothScroll() {
+    if (typeof Lenis === 'undefined') return;
+    // Respect users who prefer reduced motion: keep native scrolling for accessibility.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+}
+
+function forceScrollTop() {
+    if (window.location.hash) return; // allow deep-links / in-page anchors to keep working
+    window.scrollTo(0, 0);
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+}
+
+// Reset to top also when the page is restored from the back/forward cache.
+window.addEventListener('pageshow', forceScrollTop);
+
+// If this page was prerendered (Speculation Rules), re-assert top position and
+// refresh Lenis measurements the moment it becomes the active, visible page.
+if (document.prerendering) {
+    document.addEventListener('prerenderingchange', () => {
+        forceScrollTop();
+        if (lenis && typeof lenis.resize === 'function') lenis.resize();
+    }, { once: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initSmoothScroll();
+    forceScrollTop();
+
+    // Smooth-scroll for in-page anchor links (skips placeholder "#" links and modal triggers).
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        if (link.hasAttribute('data-modal')) return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        if (lenis) {
+            lenis.scrollTo(target);
+        } else {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+
     const navLinksContainer = document.querySelector('.nav-links');
     if (!navLinksContainer) return;
 

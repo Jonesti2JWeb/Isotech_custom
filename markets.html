@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload immagine hero (LCP) per evitare il "pop-in" dello sfondo -->
+    <link rel="preload" as="image" href="assets/images/Markets/Markets-bg-hs.avif" fetchpriority="high" type="image/avif">
     <title>ISOTECH | Markets</title>
     
     <!-- Google Fonts: Orbitron & Exo 2 -->
@@ -20,7 +22,7 @@
         <div class="nav-container">
             <div class="logo">
                 <a href="index.html">
-                    <img src="assets/icons/Logo-header.png" alt="ISOTECH Logo">
+                    <img loading="eager" decoding="async" src="assets/icons/Logo-header.avif" alt="ISOTECH Logo">
                 </a>
             </div>
             <div class="hamburger">
@@ -41,7 +43,7 @@
 
     <!-- HERO BANNER -->
     <section class="hero-banner markets-hero-banner">
-        <img src="assets/images/Markets/Markets-bg-hs.jpg" alt="Markets Hero Background" class="hero-bg-img">
+        <img loading="eager" decoding="async" fetchpriority="high" src="assets/images/Markets/Markets-bg-hs.avif" alt="Markets Hero Background" class="hero-bg-img">
         <div class="hero-overlay">
             <div class="hero-content">
                 <h1 class="text-white">MARKETS</h1>
@@ -59,7 +61,7 @@
     <main>
         <!-- OUR MARKETS INTRO -->
         <section id="our-markets" class="markets-intro-section">
-            <img src="assets/images/Markets/Markets-bg-cloud.jpg" alt="Markets Section Background" class="section-bg-img">
+            <img loading="eager" decoding="async" src="assets/images/Markets/Markets-bg-cloud.avif" alt="Markets Section Background" class="section-bg-img">
             <div class="cloud-title-container">
                 <h2 class="cloud-title">OUR MARKETS</h2>
             </div>
@@ -75,12 +77,12 @@
                 
                 <div class="bento-container">
                     <div class="bento-card full-width">
-                        <img src="assets/images/Markets/Markets-bento-1.svg" class="bento-card-bg">
+                        <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-1.avif" class="bento-card-bg">
                         <div class="bento-card-overlay"></div>
                     </div>
 
                     <div class="bento-card full-width">
-                        <img src="assets/images/Markets/Markets-bento-2.png" class="bento-card-bg">
+                        <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-2.avif" class="bento-card-bg">
                         <div class="bento-card-overlay">
                             <h3>Marine & Offshore</h3>
                             <p>We provide expert support for the design and supply of transformers and electrical equipment engineered to withstand harsh marine environments, ensuring operational continuity and safety on vessels and offshore platforms.</p>
@@ -89,7 +91,7 @@
 
                     <div class="bento-row">
                         <div class="bento-card half-width">
-                            <img src="assets/images/Markets/Markets-bento-3.jpg" class="bento-card-bg">
+                            <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-3.avif" class="bento-card-bg">
                             <div class="bento-card-overlay">
                                 <h3>Oil & Gas</h3>
                                 <p>We operate in high-risk environments where technical precision is paramount. We offer specific solutions for extraction and refining infrastructures, where the robustness of electrical components is an essential requirement.</p>
@@ -97,7 +99,7 @@
                         </div>
 
                         <div class="bento-card half-width">
-                            <img src="assets/images/Markets/Markets-bento-4.jpg" class="bento-card-bg">
+                            <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-4.avif" class="bento-card-bg">
                             <div class="bento-card-overlay">
                                 <h3>Industrial: Metal, Steel & Mining</h3>
                                 <p>We support heavy industry — including steel mills, mining plants, and production sites — by providing specialized consulting on reactors and electrical systems capable of handling high power loads and intensive production cycles.</p>
@@ -107,7 +109,7 @@
 
                     <div class="bento-row">
                         <div class="bento-card half-width">
-                            <img src="assets/images/Markets/Markets-bento-5.png" class="bento-card-bg">
+                            <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-5.avif" class="bento-card-bg">
                             <div class="bento-card-overlay">
                                 <h3>Renewables: Solar, Wind & Water Treatment</h3>
                                 <p>We are active players in the energy transition. We support solar and wind energy projects, as well as the water treatment sector, with optimized components designed to maximize the efficiency of renewable sources.</p>
@@ -115,7 +117,7 @@
                         </div>
 
                         <div class="bento-card half-width">
-                            <img src="assets/images/Markets/Markets-bento-6.jpg" class="bento-card-bg">
+                            <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-6.avif" class="bento-card-bg">
                             <div class="bento-card-overlay">
                                 <h3>Utilities & EPC Companies</h3>
                                 <p>We work closely with Engineering, Procurement, and Construction (EPC) companies and major public utility providers, offering a strategic bridge between complex engineering design and on-site implementation.</p>
@@ -124,7 +126,7 @@
                     </div>
 
                     <div class="bento-card full-width">
-                        <img src="assets/images/Markets/Markets-bento-7.jpg" class="bento-card-bg">
+                        <img loading="lazy" decoding="async" src="assets/images/Markets/Markets-bento-7.avif" class="bento-card-bg">
                         <div class="bento-card-overlay">
                             <h3>Power Generation, Transmission & Distribution</h3>
                             <p>From power plants to end-user distribution. Our expertise covers the entire power supply chain, ensuring that energy is generated, transmitted, and distributed according to the highest technical efficiency standards.</p>
@@ -139,7 +141,7 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-col brand-col">
-                <img src="assets/icons/logo-isotech-color.svg" alt="ISOTECH Logo" class="footer-logo">
+                <img loading="lazy" decoding="async" src="assets/icons/logo-isotech-color.svg" alt="ISOTECH Logo" class="footer-logo">
                 <p class="company-address">
                     <strong>ISOTECH S. r. l.</strong> – Via Enrico De Nicola, 3 – 35031 ABANO TERME (PD) – ITALY<br>
                     Tel. +39 049 86 66 190 – <a href="mailto:info@isotech.it">info@isotech.it</a> – <a href="http://www.isotech.it" target="_blank">www.isotech.it</a><br>
@@ -183,6 +185,18 @@
         </div>
     </footer>
 
+    <script src="js/vendor/lenis.min.js"></script>
     <script src="js/main.js"></script>
+    <!-- Prerender delle altre pagine al passaggio del mouse: navigazione istantanea -->
+    <script type="speculationrules">
+    {
+      "prerender": [
+        {
+          "where": { "href_matches": "/*.html" },
+          "eagerness": "moderate"
+        }
+      ]
+    }
+    </script>
 </body>
 </html>

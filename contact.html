@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload immagine hero (LCP) per evitare il "pop-in" dello sfondo -->
+    <link rel="preload" as="image" href="assets/images/Contact/Contact-bg.avif" fetchpriority="high" type="image/avif">
     <title>ISOTECH | Contact</title>
     
     <!-- Google Fonts: Orbitron & Exo 2 -->
@@ -20,7 +22,7 @@
         <div class="nav-container">
             <div class="logo">
                 <a href="index.html">
-                    <img src="assets/icons/Logo-header.png" alt="ISOTECH Logo">
+                    <img loading="eager" decoding="async" src="assets/icons/Logo-header.avif" alt="ISOTECH Logo">
                 </a>
             </div>
             <div class="hamburger">
@@ -165,7 +167,7 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-col brand-col">
-                <img src="assets/icons/logo-isotech-color.svg" alt="ISOTECH Logo" class="footer-logo">
+                <img loading="lazy" decoding="async" src="assets/icons/logo-isotech-color.svg" alt="ISOTECH Logo" class="footer-logo">
                 <p class="company-address">
                     <strong>ISOTECH S. r. l.</strong> – Via Enrico De Nicola, 3 – 35031 ABANO TERME (PD) – ITALY<br>
                     Tel. +39 049 86 66 190 – <a href="mailto:info@isotech.it">info@isotech.it</a> – <a href="http://www.isotech.it" target="_blank">www.isotech.it</a><br>
@@ -209,6 +211,18 @@
         </div>
     </footer>
 
+    <script src="js/vendor/lenis.min.js"></script>
     <script src="js/main.js"></script>
+    <!-- Prerender delle altre pagine al passaggio del mouse: navigazione istantanea -->
+    <script type="speculationrules">
+    {
+      "prerender": [
+        {
+          "where": { "href_matches": "/*.html" },
+          "eagerness": "moderate"
+        }
+      ]
+    }
+    </script>
 </body>
 </html>

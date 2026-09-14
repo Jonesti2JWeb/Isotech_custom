@@ -1,5 +1,4 @@
-/* --- FONTS & IMPORTS --- */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700&family=Orbitron:wght@700;900&display=swap');
+/* --- FONTS --- (caricati via <link> + preconnect nell'<head> di ogni pagina; nessun @import render-blocking) --- */
 
 /* --- VARIABILI GLOBALI --- */
 :root {
@@ -26,7 +25,8 @@
     box-sizing: border-box;
 }
 
-html {
+/* Native smooth scroll only as fallback; Lenis (adds .lenis on <html>) handles smoothing when active. */
+html:not(.lenis) {
     scroll-behavior: smooth;
 }
 
@@ -115,11 +115,11 @@ h2.h2-center, .h2-center {
 }
 
 .home-hero-banner {
-    background-image: url('../assets/images/Homepage/hero-bg.svg');
+    background-image: url('../assets/images/Homepage/hero-bg.avif');
 }
 
 .products-hero-banner {
-    background-image: url('../assets/images/Products/Products-bg-hs.jpg') !important;
+    background-image: url('../assets/images/Products/Products-bg-hs.avif') !important;
 }
 
 .markets-hero-banner h1,
@@ -199,7 +199,7 @@ h2.hero-subtitle,
     position: relative;
     width: 100%;
     min-height: 40vh;
-    background: url('../assets/images/Homepage/hero-bg.svg') no-repeat center center;
+    background: url('../assets/images/Homepage/hero-bg.avif') no-repeat center center;
     background-size: cover;
     display: flex;
     align-items: center;
@@ -291,7 +291,7 @@ h2.hero-subtitle,
 .dark-section {
     position: relative;
     width: 100%;
-    background: url('../assets/images/Homepage/hero-bg.svg') no-repeat center center;
+    background: url('../assets/images/Homepage/hero-bg.avif') no-repeat center center;
     background-size: cover;
     padding: 90px 40px;
     border-bottom: 1px solid rgba(0, 212, 255, 0.15);
@@ -299,7 +299,7 @@ h2.hero-subtitle,
 
 .who-we-are-section,
 .references-section {
-    background-image: url('../assets/images/Homepage/hero-bg-1.svg') !important;
+    background-image: url('../assets/images/Homepage/hero-bg-1.avif') !important;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: cover !important;
@@ -601,11 +601,11 @@ h2.hero-subtitle,
 }
 
 .services-intro-section {
-    background: url('../assets/images/Services/Services-bg-cloud.svg') no-repeat center center / cover !important;
+    background: url('../assets/images/Services/Services-bg-cloud.avif') no-repeat center center / cover !important;
 }
 
 .markets-intro-section {
-    background: url('../assets/images/Markets/Markets-bg-cloud.jpg') no-repeat center center / cover !important;
+    background: url('../assets/images/Markets/Markets-bg-cloud.avif') no-repeat center center / cover !important;
 }
 
 .projects-intro-section {
@@ -796,7 +796,7 @@ h2.hero-subtitle,
     position: relative;
     width: 100%;
     min-height: 90vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../assets/images/Contact/Contact-bg.jpg') no-repeat center center / cover !important;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../assets/images/Contact/Contact-bg.avif') no-repeat center center / cover !important;
     padding: 60px 20px 100px 20px;
     display: flex;
     justify-content: center;
@@ -1904,4 +1904,23 @@ h2.hero-subtitle,
     .info-modal-title {
         font-size: 24px;
     }
+}
+
+/* --- LENIS SMOOTH SCROLL --- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
