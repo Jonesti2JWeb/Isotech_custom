@@ -207,8 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Product Image Lightbox Zoom Modal
-    const productImages = document.querySelectorAll('.product-img-wrapper');
+    // Image Lightbox Zoom Modal (product cards + project gallery)
+    const productImages = document.querySelectorAll('.product-img-wrapper, .project-gallery-item');
     if (productImages.length > 0) {
         // Create modal container if not exists
         let modal = document.querySelector('.product-lightbox-modal');
@@ -257,9 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         productImages.forEach(wrapper => {
             wrapper.addEventListener('click', () => {
-                const img = wrapper.querySelector('.product-img');
+                const img = wrapper.querySelector('img');
                 const card = wrapper.closest('.product-card');
-                const title = card ? card.querySelector('.product-name').textContent : '';
+                const title = card ? card.querySelector('.product-name').textContent : (img ? img.alt : '');
                 if (img) {
                     openModal(img.src, title);
                 }
@@ -376,17 +376,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Scroll Transition between Hero Section and Intro Section (Text + Background Cross-Fade)
+    // Scroll Transition between Hero Section and Intro Section (hero text fades out, intro text fades in)
     function initHeroScrollTransition() {
         const heroBanner = document.querySelector('.projects-hero-banner, .services-hero-banner, .markets-hero-banner');
         if (!heroBanner) return;
 
         const heroContent = heroBanner.querySelector('.hero-content');
-        const heroBgImg = heroBanner.querySelector('.hero-bg-img');
         const introSection = document.querySelector('.projects-intro-section, .services-intro-section, .markets-intro-section');
         if (!heroContent || !introSection) return;
 
-        const introBgImg = introSection.querySelector('.section-bg-img');
         const introElements = introSection.querySelectorAll('.cloud-title-container, .services-intro-text, .markets-intro-text');
 
         let ticking = false;
@@ -407,37 +405,9 @@ document.addEventListener('DOMContentLoaded', () => {
             heroContent.style.opacity = heroOpacity.toFixed(3);
             heroContent.style.transform = `translateY(${heroTranslateY.toFixed(1)}px)`;
 
-            // 2. Hero Background Image Parallax & Fade Out (0% -> 80% scroll)
-            if (heroBgImg) {
-                const bgFadeDistance = heroHeight * 0.80;
-                let bgProgress = scrollY / bgFadeDistance;
-                if (bgProgress < 0) bgProgress = 0;
-                if (bgProgress > 1) bgProgress = 1;
+            // Backgrounds stay still: the hero photo melts into the clouds through a CSS gradient (no fade on scroll)
 
-                const bgOpacity = 1 - bgProgress;
-                const bgTranslateY = scrollY * 0.30; // Smooth parallax movement
-                const bgScale = 1 + (scrollY / heroHeight) * 0.05; // Subtle scale depth
-
-                heroBgImg.style.opacity = bgOpacity.toFixed(3);
-                heroBgImg.style.transform = `translateY(${bgTranslateY.toFixed(1)}px) scale(${bgScale.toFixed(3)})`;
-            }
-
-            // 3. Intro Section Background Image Fade In & Parallax (10% -> 75% scroll)
-            if (introBgImg) {
-                const introBgStart = heroHeight * 0.10;
-                const introBgEnd = heroHeight * 0.75;
-                let introBgProgress = (scrollY - introBgStart) / (introBgEnd - introBgStart);
-                if (introBgProgress < 0) introBgProgress = 0;
-                if (introBgProgress > 1) introBgProgress = 1;
-
-                const introBgOpacity = 0.2 + (0.8 * introBgProgress);
-                const introBgTranslateY = (1 - introBgProgress) * -15;
-
-                introBgImg.style.opacity = introBgOpacity.toFixed(3);
-                introBgImg.style.transform = `translateY(${introBgTranslateY.toFixed(1)}px)`;
-            }
-
-            // 4. Intro Section Content Text Fade In (15% -> 70% hero height scroll)
+            // 2. Intro Section Content Text Fade In (15% -> 70% hero height scroll)
             const introFadeStart = heroHeight * 0.15;
             const introFadeEnd = heroHeight * 0.70;
             
@@ -472,55 +442,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initHeroScrollTransition();
 
-    // Mask Logo Scroll Animation (Homepage)
+    // Homepage Hero Logo Mask Reveal: the logo clips the first background and shrinks from huge
+    // to its final size while the hero is pinned, revealing the second background around it.
     function initMaskLogoScrollTransition() {
-        const maskLogo = document.querySelector('.scroll-mask-logo');
-        const whoWeAreSection = document.querySelector('#who-we-are');
-        const heroBanner = document.querySelector('.home-hero-banner');
+        const hero = document.querySelector('.home-hero');
+        const masked = hero && hero.querySelector('.home-hero-masked');
+        if (!hero || !masked) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        if (!maskLogo || !whoWeAreSection || !heroBanner) return;
+        const stage = hero.querySelector('.home-hero-stage');
+        const heroContent = hero.querySelector('.hero-content');
+        const whoWeAre = document.querySelector('.who-we-are-section');
 
-        let tickingMask = false;
+        // Mask image geometry (assets/icons/logo-mask.avif is 4800x1788).
+        const MASK_RATIO = 1788 / 4800;
+        // Visual centre of the logo inside the mask image (the left edge of the image is empty margin).
+        const LOGO_CENTER = { x: 0.532, y: 0.5 };
+        // Gap between the logo's final position and the "Who We Are" title right below it.
+        const END_GAP = 40;
 
-        function updateMaskScroll() {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const heroHeight = heroBanner.offsetHeight || window.innerHeight;
-            
-            // The animation happens while scrolling down the hero section
-            // From 0 to 80% of hero height
-            const animEnd = heroHeight * 0.80;
-            
-            let progress = scrollY / animEnd;
-            if (progress < 0) progress = 0;
-            if (progress > 1) progress = 1;
+        masked.classList.add('is-masked');
 
-            // Smooth easing (Ease Out Cubic)
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const clamp01 = (v) => Math.min(Math.max(v, 0), 1);
+        const lerp = (a, b, t) => a + (b - a) * t;
+        const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-            // Scale shrinks from very large (25x) to normal (1x)
-            const maxScale = 25;
-            const currentScale = maxScale - (maxScale - 1) * easeProgress;
-            
-            // Opacity fades in quickly during the first 10% of the animation
-            const opacityProgress = Math.min(progress / 0.1, 1);
-            
-            maskLogo.style.transform = `scale(${currentScale.toFixed(3)})`;
-            maskLogo.style.opacity = opacityProgress.toFixed(3);
+        let ticking = false;
 
-            tickingMask = false;
+        function update() {
+            // Measure the pinned stage, not the window: on mobile the layout viewport can be wider than the screen
+            const vw = stage.clientWidth;
+            const vh = stage.clientHeight;
+            const scrollable = Math.max(hero.offsetHeight - vh, 1);
+            const progress = clamp01((window.scrollY - hero.offsetTop) / scrollable);
+
+            // 1. Hero text fades out at the start (0% -> 12%)
+            if (heroContent) {
+                const textProgress = clamp01(progress / 0.12);
+                heroContent.style.opacity = (1 - textProgress).toFixed(3);
+                heroContent.style.transform = `translateY(${(textProgress * -30).toFixed(1)}px)`;
+                heroContent.style.visibility = textProgress >= 1 ? 'hidden' : '';
+            }
+
+            // 2. The full first image dissolves into the logo shape (2% -> 30%)
+            const cover = 1 - easeInOutCubic(clamp01((progress - 0.02) / 0.28));
+            masked.style.setProperty('--mask-cover', cover.toFixed(3));
+
+            // 3. Logo shrinks from huge to its final size, always centred on screen (0% -> 75%)
+            const t = easeInOutCubic(clamp01(progress / 0.75));
+            const startWidth = Math.max(vw, vh / MASK_RATIO) * 10;
+            const endWidth = Math.min(vw * 0.6, 760);
+            // Interpolate in log space so the zoom speed feels constant
+            const width = Math.exp(lerp(Math.log(startWidth), Math.log(endWidth), t));
+            const height = width * MASK_RATIO;
+
+            const centerY = vh / 2;
+
+            // 4. "Who We Are" overlaps the end of the hero track, so it scrolls up under the centred logo and
+            //    stops right below it when the stage unpins (same fixed background: no visible seam).
+            if (whoWeAre) {
+                const endHeight = endWidth * MASK_RATIO;
+                const overlap = Math.max(vh / 2 - endHeight / 2 - END_GAP, 0);
+                whoWeAre.style.marginTop = `${(-overlap).toFixed(1)}px`;
+            }
+
+            const size = `${width.toFixed(1)}px ${height.toFixed(1)}px, 100% 100%`;
+            const position = `${(vw / 2 - LOGO_CENTER.x * width).toFixed(1)}px ${(centerY - LOGO_CENTER.y * height).toFixed(1)}px, 0 0`;
+
+            masked.style.webkitMaskSize = size;
+            masked.style.maskSize = size;
+            masked.style.webkitMaskPosition = position;
+            masked.style.maskPosition = position;
+
+            ticking = false;
         }
 
-        function onMaskScroll() {
-            if (!tickingMask) {
-                requestAnimationFrame(updateMaskScroll);
-                tickingMask = true;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(update);
+                ticking = true;
             }
         }
 
-        window.addEventListener('scroll', onMaskScroll, { passive: true });
-        window.addEventListener('resize', onMaskScroll, { passive: true });
-        
-        updateMaskScroll(); // Initialize
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+
+        update(); // Initialize
     }
 
     initMaskLogoScrollTransition();

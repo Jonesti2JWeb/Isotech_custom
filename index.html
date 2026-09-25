@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Preload immagine hero (LCP) per evitare il "pop-in" dello sfondo -->
     <link rel="preload" as="image" href="assets/images/Homepage/hero-bg.avif" fetchpriority="high" type="image/avif">
+    <link rel="preload" as="image" href="assets/icons/logo-mask.avif" type="image/avif">
     <title>ISOTECH | Energy Solutions & Advanced Technology</title>
     
     <!-- Google Fonts: Orbitron & Exo 2 -->
@@ -41,18 +42,22 @@
         </div>
     </header>
 
-    <!-- HERO BANNER -->
-    <section class="hero-banner home-hero-banner">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <h1>ENERGY SOLUTIONS<br>ADVANCED&nbsp;TECHNOLOGY</h1>
-                <h2 class="hero-subtitle">
-                    "...Since 1989... Your Success is our business.<br>
-                    Innovation & Reliability our Mission..!"
-                </h2>
-                <a href="#who-we-are" class="btn-primary">
-                    Learn More <span class="arrow-icon">&#10132;</span>
-                </a>
+    <!-- HERO BANNER (logo mask reveal: the ISOTECH logo masks the first background and shrinks on scroll, revealing the second one) -->
+    <section class="home-hero">
+        <div class="home-hero-stage">
+            <div class="home-hero-layer home-hero-reveal" aria-hidden="true"></div>
+            <div class="home-hero-layer home-hero-masked" aria-hidden="true"></div>
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1>ENERGY SOLUTIONS<br>ADVANCED&nbsp;TECHNOLOGY</h1>
+                    <h2 class="hero-subtitle">
+                        Since 1989 Your Success is our business<br>
+                        Innovation & Reliability our Mission
+                    </h2>
+                    <a href="#who-we-are" class="btn-primary">
+                        Learn More <span class="arrow-icon">&#10132;</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -63,11 +68,6 @@
         <section id="who-we-are" class="dark-section who-we-are-section">
             <div class="dark-section-container">
                 
-                <!-- Mask Logo Animation Container -->
-                <div class="mask-logo-wrapper">
-                    <img loading="eager" decoding="async" fetchpriority="high" src="assets/icons/Logo%20Isotech%20Maschera.avif" alt="ISOTECH Mask Logo" class="scroll-mask-logo">
-                </div>
-
                 <h2 class="section-title-bold center">WHO WE ARE</h2>
                 
                 <p class="who-we-are-text">
