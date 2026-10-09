@@ -59,6 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = document.querySelector(href);
         if (!target) return;
         e.preventDefault();
+
+        // data-scroll-to="hero-end": stop where the pinned home hero releases, i.e. the end of the logo
+        // animation (white logo centred with "Who We Are" right below it). Without the animation
+        // (reduced motion) fall back to the target itself.
+        const hero = document.querySelector('.home-hero');
+        const stage = hero && hero.querySelector('.home-hero-stage');
+        if (link.dataset.scrollTo === 'hero-end' && stage
+            && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const heroEnd = hero.offsetTop + hero.offsetHeight - stage.clientHeight;
+            if (lenis) {
+                lenis.scrollTo(heroEnd);
+            } else {
+                window.scrollTo({ top: heroEnd, behavior: 'smooth' });
+            }
+            return;
+        }
+
         if (lenis) {
             lenis.scrollTo(target);
         } else {
@@ -160,17 +177,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Hamburger Menu Toggle
     const hamburger = document.querySelector('.hamburger');
     if (hamburger) {
+        function setMenuOpen(open) {
+            navLinksContainer.classList.toggle('nav-active', open);
+            hamburger.classList.toggle('toggle', open);
+            // Freeze the page behind the open menu
+            if (lenis) {
+                if (open) lenis.stop(); else lenis.start();
+            }
+            document.documentElement.classList.toggle('menu-locked', open);
+        }
+
         hamburger.addEventListener('click', () => {
-            navLinksContainer.classList.toggle('nav-active');
-            hamburger.classList.toggle('toggle');
+            setMenuOpen(!navLinksContainer.classList.contains('nav-active'));
         });
-        
-        // Close menu when clicking a link
+
+        // Close menu when clicking a link, tapping outside it or pressing Escape
         links.forEach(link => {
-            link.addEventListener('click', () => {
-                navLinksContainer.classList.remove('nav-active');
-                hamburger.classList.remove('toggle');
-            });
+            link.addEventListener('click', () => setMenuOpen(false));
+        });
+        document.addEventListener('click', (e) => {
+            if (!navLinksContainer.classList.contains('nav-active')) return;
+            if (navLinksContainer.contains(e.target) || hamburger.contains(e.target)) return;
+            setMenuOpen(false);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinksContainer.classList.contains('nav-active')) setMenuOpen(false);
         });
     }
 
@@ -308,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Featured Products Carousel Script
+    // Featured products carousel: one product per slide
     const carouselTrack = document.querySelector('.carousel-track');
     const prevBtn = document.querySelector('.carousel-nav-btn.prev-btn');
     const nextBtn = document.querySelector('.carousel-nav-btn.next-btn');
@@ -315,30 +347,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (carouselTrack && prevBtn && nextBtn) {
         let currentIndex = 0;
 
-        function getVisibleCardsCount() {
-            if (window.innerWidth <= 640) return 1;
-            if (window.innerWidth <= 1024) return 2;
-            return 3;
+        const dotsContainer = document.querySelector('.carousel-dots');
+
+        function getMaxIndex() {
+            return carouselTrack.querySelectorAll('.carousel-card').length - 1;
         }
 
         function updateCarousel() {
             const cards = carouselTrack.querySelectorAll('.carousel-card');
             if (cards.length === 0) return;
-            const totalCards = cards.length;
-            const visibleCards = getVisibleCardsCount();
-            const maxIndex = totalCards - visibleCards;
+            const maxIndex = getMaxIndex();
 
             if (currentIndex < 0) currentIndex = 0;
             if (currentIndex > maxIndex) currentIndex = maxIndex;
 
-            const cardWidth = cards[0].offsetWidth + 30; // Card width + gap
+            const gap = parseFloat(getComputedStyle(carouselTrack).columnGap) || 0;
+            const cardWidth = cards[0].offsetWidth + gap;
             carouselTrack.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+
+            if (dotsContainer) {
+                if (dotsContainer.children.length !== cards.length) {
+                    dotsContainer.innerHTML = '<span class="carousel-dot"></span>'.repeat(cards.length);
+                }
+                [...dotsContainer.children].forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+            }
         }
 
         nextBtn.addEventListener('click', () => {
-            const visibleCards = getVisibleCardsCount();
-            const totalCards = carouselTrack.querySelectorAll('.carousel-card').length;
-            if (currentIndex < totalCards - visibleCards) {
+            if (currentIndex < getMaxIndex()) {
                 currentIndex++;
             } else {
                 currentIndex = 0; // Loop back to start
@@ -347,12 +383,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         prevBtn.addEventListener('click', () => {
-            const visibleCards = getVisibleCardsCount();
-            const totalCards = carouselTrack.querySelectorAll('.carousel-card').length;
             if (currentIndex > 0) {
                 currentIndex--;
             } else {
-                currentIndex = totalCards - visibleCards;
+                currentIndex = getMaxIndex();
             }
             updateCarousel();
         });
@@ -360,6 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', debounce(() => {
             updateCarousel();
         }, 100));
+
+        updateCarousel();
 
         // Auto-play timer
         let autoPlayTimer = setInterval(() => {
@@ -405,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
             heroContent.style.opacity = heroOpacity.toFixed(3);
             heroContent.style.transform = `translateY(${heroTranslateY.toFixed(1)}px)`;
 
-            // Backgrounds stay still: the hero photo melts into the clouds through a CSS gradient (no fade on scroll)
+            // Backgrounds stay still (no fade on scroll)
 
             // 2. Intro Section Content Text Fade In (15% -> 70% hero height scroll)
             const introFadeStart = heroHeight * 0.15;
@@ -487,6 +523,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. The full first image dissolves into the logo shape (2% -> 30%)
             const cover = 1 - easeInOutCubic(clamp01((progress - 0.02) / 0.28));
             masked.style.setProperty('--mask-cover', cover.toFixed(3));
+
+            // 2b. Logo fills with solid white over the last part of the shrink (50% -> 75%), so it reads clearly at rest
+            const white = easeInOutCubic(clamp01((progress - 0.5) / 0.25));
+            masked.style.setProperty('--logo-white', white.toFixed(3));
 
             // 3. Logo shrinks from huge to its final size, always centred on screen (0% -> 75%)
             const t = easeInOutCubic(clamp01(progress / 0.75));

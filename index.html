@@ -49,13 +49,13 @@
             <div class="home-hero-layer home-hero-masked" aria-hidden="true"></div>
             <div class="hero-overlay">
                 <div class="hero-content">
-                    <h1>ENERGY SOLUTIONS<br>ADVANCED&nbsp;TECHNOLOGY</h1>
+                    <h1>ENERGY SOLUTIONS<br><span class="nowrap">ADVANCED TECHNOLOGY</span></h1>
                     <h2 class="hero-subtitle">
                         Since 1989 Your Success is our business<br>
-                        Innovation & Reliability our Mission
+                        Innovation & Reliability our Mission!
                     </h2>
-                    <a href="#who-we-are" class="btn-primary">
-                        Learn More <span class="arrow-icon">&#10132;</span>
+                    <a href="#who-we-are" class="btn-primary btn-learn" data-scroll-to="hero-end">
+                        Learn More <span class="btn-learn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12h12M13 7l5 5-5 5"/></svg></span>
                     </a>
                 </div>
             </div>
@@ -182,9 +182,80 @@
                     <button class="carousel-nav-btn next-btn" aria-label="Next Products">&#10095;</button>
                 </div>
 
+                <div class="carousel-dots" aria-hidden="true"></div>
+
                 <div class="carousel-footer center mt-40">
                     <a href="products.html" class="btn-primary">
                         View Complete Product Catalog (22) <span class="arrow-icon">&#10132;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAJOR PROJECTS SECTION (cards linking to the project pages) -->
+        <section id="home-projects" class="home-projects-section dark-section">
+            <div class="dark-section-container">
+                <div class="carousel-header center">
+                    <h2 class="section-title-bold text-white mb-10">MAJOR PROJECTS</h2>
+                    <p class="section-subtitle text-white mb-30">
+                        A selection of ISOTECH Major Projects across marine, oil &amp; gas, off-shore, defence and innovation.
+                    </p>
+                </div>
+
+                <div class="home-projects-grid">
+                    <a href="project-disney-cruise.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-1.avif" alt="Disney Cruiser" class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Marine</span>
+                            <h3>Disney Cruiser</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                    <a href="project-ras-laffan.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-oil-gas.avif" alt="Ras Laffan 1,025MW Combined-Cycle Plant, Qatar" class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Oil &amp; Gas Plant</span>
+                            <h3>Ras Laffan 1,025MW Combined-Cycle Plant, Qatar</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                    <a href="project-aker-h6.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-3.avif" alt="Aker H6e I &amp; H6 II Drilling rigs for ultra-deep waters" class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Off-Shore Rig</span>
+                            <h3>Aker H6e I &amp; H6 II Drilling rigs for ultra-deep waters</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                    <a href="project-al-fanar.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-4.avif" alt="Al Fanar Electrical co." class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Turn-key Project</span>
+                            <h3>Al Fanar Electrical co.</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                    <a href="project-low-losses-concept.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-5.avif" alt="Design &amp; development of LV &amp; MV Low Losses Concept" class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Innovation &amp; New solution</span>
+                            <h3>Design &amp; development of LV &amp; MV Low Losses Concept</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                    <a href="project-air-force.html" class="home-project-card">
+                        <img loading="lazy" decoding="async" src="assets/images/Projects/Projects-bento-6.avif" alt="Air Force 3^ Air Region Italy Consultancy, Design &amp; Supply" class="home-project-img">
+                        <div class="home-project-body">
+                            <span class="home-project-tag">Defence</span>
+                            <h3>Air Force 3^ Air Region Italy Consultancy, Design &amp; Supply</h3>
+                            <span class="home-project-link">View project <span class="arrow-icon">&#10132;</span></span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="carousel-footer">
+                    <a href="projects.html" class="btn-primary">
+                        View All Projects <span class="arrow-icon">&#10132;</span>
                     </a>
                 </div>
             </div>
@@ -227,7 +298,7 @@
             <div class="footer-col brand-col">
                 <img loading="lazy" decoding="async" src="assets/icons/logo-isotech-color.svg" alt="ISOTECH Logo" class="footer-logo">
                 <p class="company-address">
-                    <strong>ISOTECH S. r. l.</strong> – Via Enrico De Nicola, 3 – 35031 ABANO TERME (PD) – ITALY<br>
+                    <strong><em>ISOTECH S. r. l.</em></strong> – Via Enrico De Nicola, 3 – 35031 ABANO TERME (PD) – ITALY<br>
                     Tel. +39 049 86 66 190 – <a href="mailto:info@isotech.it">info@isotech.it</a> – <a href="http://www.isotech.it" target="_blank">www.isotech.it</a><br>
                     P.IVA/C.F.: IT 04893910283 – <a href="mailto:isotech-srl@pec.it">isotech-srl@pec.it</a> – REA: PD-426845
                 </p>
@@ -256,9 +327,6 @@
             <div class="footer-col">
                 <h3>SOCIAL</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">X Twitter</a></li>
                     <li><a href="#">LinkedIn</a></li>
                 </ul>
             </div>
@@ -276,7 +344,6 @@
             <div class="info-modal-backdrop-dark"></div>
             <button class="info-modal-close" aria-label="Close modal">&times;</button>
             <div class="info-modal-content">
-                <span class="info-modal-tag">SINCE 1989</span>
                 <h2 class="info-modal-title">HISTORY</h2>
                 <div class="info-modal-body">
                     <p>Established in 1989 by <strong>Antonio Nigro</strong>, <span class="isotech-brand">ISOTECH</span> has grown from an Italian consulting firm into an international strategic partner. For three decades, we have focused on delivering high-performance electrical equipment, bridging the gap between complex engineering needs and cutting-edge production.</p>
@@ -295,7 +362,6 @@
             <div class="info-modal-backdrop-dark"></div>
             <button class="info-modal-close" aria-label="Close modal">&times;</button>
             <div class="info-modal-content">
-                <span class="info-modal-tag">OUR VISION & CORE VALUES</span>
                 <h2 class="info-modal-title">OUR MISSION</h2>
                 <div class="info-modal-body">
                     <p class="mission-quote mb-20"><em>“Connecting technological innovation to energy challenges.”</em></p>
@@ -315,7 +381,6 @@
             <div class="info-modal-backdrop-dark"></div>
             <button class="info-modal-close" aria-label="Close modal">&times;</button>
             <div class="info-modal-content">
-                <span class="info-modal-tag">STRATEGIC ADVANTAGE</span>
                 <h2 class="info-modal-title">WHY CHOOSE US</h2>
                 <div class="info-modal-body">
                     <p>Choosing <span class="isotech-brand">ISOTECH</span> means partnering with a long-standing specialist in the energy, marine, and electromechanical sectors, dedicated to delivering tailor-made solutions with exceptional flexibility and rapid turnaround times. We bridge the gap between clients and top-tier manufacturers, leveraging a proven international track record with industry leaders like <strong>Wärtsilä</strong> to ensure every project meets the highest technical standards.</p>
