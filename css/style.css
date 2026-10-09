@@ -405,7 +405,7 @@ body::before {
 }
 
 /* Portrait screens: vertical version of the lightning photo, so it isn't cropped to a thin, enlarged strip */
-@media (orientation: portrait) and ((hover: none) or (max-width: 1024px)) {
+@media (orientation: portrait) and (hover: none), (orientation: portrait) and (max-width: 1024px) {
     .who-we-are-section::before,
     .references-section::before,
     .products-carousel-section::before,
