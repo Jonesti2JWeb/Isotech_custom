@@ -371,47 +371,47 @@ body::before {
     justify-content: center;
 }
 
-/* Touch devices (iOS Safari ignores background-attachment: fixed and stretches the image over the whole,
-   very tall section: zoomed and blurry). Same "fixed" look, done with a viewport-sized fixed layer that
-   the section clips to its own box. */
-@media (hover: none), (max-width: 1024px) {
-    .who-we-are-section,
-    .references-section,
-    .products-carousel-section,
-    .home-projects-section {
-        background: var(--primary-dark) !important;
-        clip-path: inset(0);
-    }
+/* Fixed lightning backdrop for touch devices (home page). iOS Safari ignores background-attachment: fixed
+   (it stretches the image over the whole, very tall section: zoomed and blurry) and doesn't reliably clip
+   fixed children, so instead one plain fixed layer sits behind the page and the lightning sections, plus the
+   background revealed by the logo animation, are transparent over it. Hidden on desktop. */
+.page-bg-fixed {
+    display: none;
+}
 
-    .who-we-are-section::before,
-    .references-section::before,
-    .products-carousel-section::before,
-    .home-projects-section::before {
-        content: "";
+@media (hover: none), (max-width: 1024px) {
+    .page-bg-fixed {
+        display: block;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
         height: 100lvh;
-        background: url('../assets/images/Homepage/hero-bg-1.avif') center center / cover no-repeat;
-        z-index: 0;
+        background: var(--primary-dark) url('../assets/images/Homepage/hero-bg-1.avif') center center / cover no-repeat;
         pointer-events: none;
     }
 
-    .home-hero-reveal {
-        background-attachment: scroll;
+    /* body prefix: outranks the sections' own background rules further down the file */
+    body .who-we-are-section,
+    body .references-section,
+    body .products-carousel-section,
+    body .home-projects-section,
+    body .home-hero-stage,
+    body .home-hero-reveal {
+        background: transparent !important;
+    }
+
+    /* Keep the footer painted above the fixed layer */
+    .site-footer {
+        position: relative;
     }
 }
 
-/* Portrait screens: vertical version of the lightning photo, so it isn't cropped to a thin, enlarged strip */
+/* Portrait screens: vertical version of the lightning photo */
 @media (orientation: portrait) and (hover: none), (orientation: portrait) and (max-width: 1024px) {
-    .who-we-are-section::before,
-    .references-section::before,
-    .products-carousel-section::before,
-    .home-projects-section::before,
-    .home-hero-reveal {
-        background-image: url('../assets/images/Homepage/hero-bg-1-mobile.avif') !important;
+    .page-bg-fixed {
+        background-image: url('../assets/images/Homepage/hero-bg-1-mobile.avif');
     }
 }
 
