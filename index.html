@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Preload immagine hero (LCP) per evitare il "pop-in" dello sfondo -->
-    <link rel="preload" as="image" href="assets/images/Homepage/hero-bg.avif" fetchpriority="high" type="image/avif">
-    <link rel="preload" as="image" href="assets/icons/logo-mask.avif" type="image/avif">
+    <link rel="preload" as="image" href="assets/images/Homepage/hero-bg.avif" fetchpriority="high" type="image/avif" media="(min-width: 769px)">
+    <link rel="preload" as="image" href="assets/images/Homepage/hero-bg-mobile.avif" fetchpriority="high" type="image/avif" media="(max-width: 768px)">
+    <!-- crossorigin: CSS masks are fetched in CORS mode, so the preload must match or the file is downloaded twice -->
+    <link rel="preload" as="image" href="assets/icons/logo-mask.avif" type="image/avif" crossorigin>
     <title>ISOTECH | Energy Solutions & Advanced Technology</title>
     
     <!-- Google Fonts: Orbitron & Exo 2 -->

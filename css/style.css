@@ -371,6 +371,39 @@ body::before {
     justify-content: center;
 }
 
+/* Touch devices (iOS Safari ignores background-attachment: fixed and stretches the image over the whole,
+   very tall section: zoomed and blurry). Same "fixed" look, done with a viewport-sized fixed layer that
+   the section clips to its own box. */
+@media (hover: none), (max-width: 1024px) {
+    .who-we-are-section,
+    .references-section,
+    .products-carousel-section,
+    .home-projects-section {
+        background: var(--primary-dark) !important;
+        clip-path: inset(0);
+    }
+
+    .who-we-are-section::before,
+    .references-section::before,
+    .products-carousel-section::before,
+    .home-projects-section::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100lvh;
+        background: url('../assets/images/Homepage/hero-bg-1.avif') center center / cover no-repeat;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .home-hero-reveal {
+        background-attachment: scroll;
+    }
+}
+
 /* The hero logo animation ends just above this section: start the text right at the top.
    JS pulls the section up over the end of the hero (negative margin-top) so it lands under the logo. */
 .who-we-are-section {
@@ -1918,6 +1951,10 @@ body::before {
         font-size: 15px;
         margin-bottom: 24px;
     }
+
+    .carousel-card-btn {
+        align-self: center;
+    }
 }
 
 @media (max-width: 640px) {
@@ -2237,6 +2274,24 @@ body::before {
     /* No logo on mobile: the header is just the hamburger, top right */
     .logo {
         display: none;
+    }
+
+    /* Home hero: portrait photo made for phones, full width (height 179.15vw). It is pushed down so the
+       ship's waterline (76.5% of the photo) sits at 92% of the screen height; the lower part of the photo
+       runs off the bottom. The space above is filled with the sky colour of the photo's top edge, fading
+       into the image over 60px so there is no visible seam. */
+    .home-hero-masked {
+        --photo-top: calc(92vh - 137.05vw);
+        background:
+            linear-gradient(to bottom, #c4d8e5 calc(100% - 60px), rgba(196, 216, 229, 0) 100%)
+                top center / 100% max(0px, calc(var(--photo-top) + 60px)) no-repeat,
+            url('../assets/images/Homepage/hero-bg-mobile.avif') center top var(--photo-top) / 100% auto no-repeat,
+            #c4d8e5;
+    }
+
+    /* Hero text a little above centre, leaving more sky between the button and the ship */
+    .home-hero .hero-content {
+        margin-top: -10vh;
     }
 
     /* No header logo to line up with: just keep the footer logo drawing on the text's left edge */
